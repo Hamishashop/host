@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HamishaShop — فروشگاه اکانت ماینکرفت</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a class="logo" href="#" onclick="showPage('home')">Hamisha<span>Shop</span></a>
+    <div class="nav-links" id="nav-links">
+      <a class="nav-link" href="#" onclick="showPage('home')">خانه</a>
+      <a class="nav-link" href="#" onclick="showPage('shop')">فروشگاه</a>
+      <a class="nav-link" href="#" onclick="showPage('tickets')">پشتیبانی</a>
+      <span id="nav-auth-area"></span>
+    </div>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()">☰</button>
+  </div>
+</nav>
+
+<!-- PAGES -->
+<main>
+
+<!-- HOME -->
+<section class="page active" id="page-home">
+  <div class="hero">
+    <p class="hero-eyebrow">فروشگاه رسمی</p>
+    <h1>اکانت ماینکرفت<br><span>اورجینال</span></h1>
+    <p class="hero-sub">تحویل فوری · گارانتی ۱۰۰٪ · پشتیبانی ۲۴/۷</p>
+    <button class="btn-primary" onclick="showPage('shop')">مشاهده محصولات</button>
+  </div>
+
+  <div class="container">
+    <div class="features-row">
+      <div class="feature">
+        <span class="feat-icon">⚡</span>
+        <strong>تحویل فوری</strong>
+        <p>بعد از تأیید پرداخت</p>
+      </div>
+      <div class="feature">
+        <span class="feat-icon">🛡</span>
+        <strong>گارانتی اورجینال</strong>
+        <p>تمام اکانت‌ها تضمینی</p>
+      </div>
+      <div class="feature">
+        <span class="feat-icon">💬</span>
+        <strong>پشتیبانی آنلاین</strong>
+        <p>از طریق تیکت</p>
+      </div>
+    </div>
+
+    <h2 class="section-title">محصولات</h2>
+    <div class="product-grid" id="home-products"></div>
+  </div>
+</section>
+
+<!-- SHOP -->
+<section class="page" id="page-shop">
+  <div class="container">
+    <div class="page-header">
+      <h1>فروشگاه</h1>
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all" onclick="filterProducts(this,'all')">همه</button>
+        <button class="filter-btn" data-filter="java" onclick="filterProducts(this,'java')">جاوا</button>
+        <button class="filter-btn" data-filter="bedrock" onclick="filterProducts(this,'bedrock')">بدراک</button>
+        <button class="filter-btn" data-filter="service" onclick="filterProducts(this,'service')">خدمات</button>
+      </div>
+    </div>
+    <div class="product-grid" id="shop-products"></div>
+  </div>
+</section>
+
+<!-- TICKETS -->
+<section class="page" id="page-tickets">
+  <div class="container">
+    <div class="page-header">
+      <h1>پشتیبانی</h1>
+      <button class="btn-primary btn-sm" id="new-ticket-btn" onclick="openNewTicket()" style="display:none">+ تیکت جدید</button>
+    </div>
+    <div id="tickets-wrap"></div>
+  </div>
+</section>
+
+<!-- PROFILE -->
+<section class="page" id="page-profile">
+  <div class="container narrow">
+    <h1 class="section-title">پروفایل</h1>
+    <div class="profile-card" id="profile-card"></div>
+    <h2 class="section-title" style="margin-top:2rem">خریدهای من</h2>
+    <div id="my-orders"></div>
+    <h2 class="section-title" style="margin-top:2rem">اکانت‌های من</h2>
+    <div id="my-accounts"></div>
+  </div>
+</section>
+
+<!-- AUTH -->
+<section class="page" id="page-auth">
+  <div class="container narrow">
+    <div class="auth-box">
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">ورود</button>
+        <button class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">ثبت‌نام</button>
+      </div>
+
+      <div id="form-login">
+        <div class="field"><label>نام کاربری</label><input type="text" id="login-user" placeholder="username"></div>
+        <div class="field"><label>رمز عبور</label><input type="password" id="login-pass" placeholder="••••••••"></div>
+        <div class="field-error" id="login-err"></div>
+        <button class="btn-primary full" onclick="doLogin()">ورود</button>
+      </div>
+
+      <div id="form-register" style="display:none">
+        <div class="field"><label>نام کاربری</label><input type="text" id="reg-user" placeholder="username"></div>
+        <div class="field"><label>ایمیل</label><input type="email" id="reg-email" placeholder="email@example.com"></div>
+        <div class="field"><label>رمز عبور</label><input type="password" id="reg-pass" placeholder="••••••••"></div>
+        <div class="field-error" id="reg-err"></div>
+        <button class="btn-primary full" onclick="doRegister()">ساخت حساب</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADMIN -->
+<section class="page" id="page-admin">
+  <div class="container">
+    <div class="admin-layout">
+      <aside class="admin-sidebar">
+        <div class="admin-brand">پنل ادمین</div>
+        <nav class="admin-nav">
+          <button class="anav active" onclick="adminTab('dashboard',this)">📊 داشبورد</button>
+          <button class="anav" onclick="adminTab('products',this)">📦 محصولات</button>
+          <button class="anav" onclick="adminTab('orders',this)">🧾 سفارشات</button>
+          <button class="anav" onclick="adminTab('tickets-admin',this)">🎫 تیکت‌ها</button>
+          <button class="anav" onclick="adminTab('users-admin',this)">👥 کاربران</button>
+          <button class="anav" onclick="adminTab('settings',this)">⚙️ تنظیمات</button>
+          <button class="anav logout-btn" onclick="adminLogout()">خروج</button>
+        </nav>
+      </aside>
+      <div class="admin-body">
+
+        <div id="atab-dashboard" class="atab active">
+          <h2>داشبورد</h2>
+          <div class="stats-row" id="admin-stats"></div>
+          <h3 style="margin:1.5rem 0 1rem">سفارشات در انتظار تأیید</h3>
+          <div id="pending-orders-list"></div>
+        </div>
+
+        <div id="atab-products" class="atab">
+          <div class="tab-header">
+            <h2>مدیریت محصولات</h2>
+            <button class="btn-primary btn-sm" onclick="openProductModal()">+ محصول جدید</button>
+          </div>
+          <div class="product-table-wrap" id="admin-products-list"></div>
+        </div>
+
+        <div id="atab-orders" class="atab">
+          <h2>همه سفارشات</h2>
+          <div id="all-orders-list"></div>
+        </div>
+
+        <div id="atab-tickets-admin" class="atab">
+          <h2>تیکت‌ها</h2>
+          <div id="admin-tickets-list"></div>
+        </div>
+
+        <div id="atab-users-admin" class="atab">
+          <h2>کاربران</h2>
+          <div id="admin-users-list"></div>
+        </div>
+
+        <div id="atab-settings" class="atab">
+          <h2>تنظیمات سایت</h2>
+          <div class="settings-card">
+            <h3>شماره کارت پرداخت</h3>
+            <p class="muted">شماره کارتی که مشتریان به آن واریز می‌کنند</p>
+            <div class="field"><input type="text" id="card-number-input" placeholder="6037-xxxx-xxxx-xxxx" dir="ltr"></div>
+            <div class="field"><label>نام صاحب کارت</label><input type="text" id="card-owner-input" placeholder="نام و نام خانوادگی"></div>
+            <button class="btn-primary btn-sm" onclick="saveCardInfo()">ذخیره</button>
+          </div>
+          <div class="settings-card" style="margin-top:1rem">
+            <h3>رمز ادمین</h3>
+            <div class="field"><label>رمز جدید</label><input type="password" id="new-admin-pass" placeholder="••••••••"></div>
+            <button class="btn-primary btn-sm" onclick="changeAdminPass()">تغییر رمز</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADMIN LOGIN -->
+<section class="page" id="page-admin-login">
+  <div class="container narrow">
+    <div class="auth-box">
+      <div class="logo" style="text-align:center;margin-bottom:1.5rem;display:block">پنل ادمین</div>
+      <div class="field"><label>رمز ادمین</label><input type="password" id="admin-pass-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminLogin()"></div>
+      <div class="field-error" id="admin-login-err"></div>
+      <button class="btn-primary full" onclick="doAdminLogin()">ورود به پنل</button>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-links">
+      <a href="#" onclick="showPage('home')">خانه</a>
+      <a href="#" onclick="showPage('shop')">فروشگاه</a>
+      <a href="#about-modal" onclick="openModal('about')">درباره ما</a>
+      <a href="#contact-modal" onclick="openModal('contact')">تماس با ما</a>
+    </div>
+    <p class="footer-copy">© ۱۴۰۳ HamishaShop — تمام حقوق محفوظ است</p>
+    <p class="footer-credit">ساخته شده با ❤️ توسط <strong>Reymit</strong></p>
+  </div>
+</footer>
+
+<!-- MODALS -->
+<div class="modal-backdrop" id="modal-backdrop" onclick="closeAllModals()"></div>
+
+<!-- Buy Modal -->
+<div class="modal" id="modal-buy">
+  <button class="modal-close" onclick="closeAllModals()">✕</button>
+  <div id="buy-modal-content"></div>
+</div>
+
+<!-- Payment Modal -->
+<div class="modal" id="modal-payment">
+  <button class="modal-close" onclick="closeAllModals()">✕</button>
+  <h3>پرداخت کارت به کارت</h3>
+  <div class="payment-card-display" id="payment-card-display"></div>
+  <p class="muted" style="margin:1rem 0 0.5rem">مبلغ قابل پرداخت:</p>
+  <div class="price-big" id="payment-amount"></div>
+  <p class="muted small" style="margin-top:0.75rem">پس از واریز، رسید پرداخت خود را آپلود کنید</p>
+  <div class="field" style="margin-top:1rem">
+    <label>کد پیگیری / توضیح پرداخت</label>
+    <input type="text" id="payment-ref" placeholder="مثال: 123456 یا علی - ساعت ۱۵:۳۰">
+  </div>
+  <button class="btn-primary full" onclick="submitPayment()">ارسال برای تأیید ادمین</button>
+</div>
+
+<!-- Ticket New Modal -->
+<div class="modal" id="modal-new-ticket">
+  <button class="modal-close" onclick="closeAllModals()">✕</button>
+  <h3>تیکت جدید</h3>
+  <div class="field"><label>موضوع</label><input type="text" id="t-subject" placeholder="موضوع تیکت"></div>
+  <div class="field"><label>دسته</label>
+    <select id="t-cat">
+      <option>مشکل فنی</option><option>سوال</option><option>استرداد</option><option>سایر</option>
+    </select>
+  </div>
+  <div class="field"><label>پیام</label><textarea id="t-msg" rows="4" placeholder="توضیح بدید..."></textarea></div>
+  <button class="btn-primary full" onclick="submitTicket()">ارسال تیکت</button>
+</div>
+
+<!-- Ticket View Modal -->
+<div class="modal modal-wide" id="modal-ticket-view">
+  <button class="modal-close" onclick="closeAllModals()">✕</button>
+  <div id="ticket-view-inner"></div>
+</div>
+
+<!-- Product Modal -->
+<div class="modal" id="modal-product">
+  <button class="modal-close" onclick="closeAllModals()">✕</button>
+  <h3 id="product-modal-title">محصول جدید</h3>
+  <div class="field"><label>نام</label><input type="text" id="pm-name" placeholder="نام محصول"></div>
+  <div class="field"><label>دسته</label>
+    <select id="pm-cat">
+      <option value="java">اکانت جاوا</option>
+      <option value="bedrock">اکانت بدراک</option>
+      <option value="service">خدمات</option>
+    </select>
+  </div>
+  <div class="field"><label>قیمت (تومان)</label><input type="number" id="pm-price" placeholder="مثال: 180000"></div>
+  <div class="field"><label>قیمت قبل تخفیف (اختیاری)</label><input type="number" id="pm-old" placeholder="اختیاری"></div>
+  <div class="field"><label>توضیح کوتاه</label><input type="text" id="pm-desc" placeholder="یک خط توضیح"></div>
+  <div class="field"><label>ایموجی</label><input type="text" id="pm-icon" placeholder="🎮" maxlength="4"></div>
+  <div class="field"><label>برچسب</label>
+    <select id="pm-badge">
+      <option value="">بدون برچسب</option>
+      <option value="hot">پرفروش</option>
+      <option value="new">جدید</option>
+      <option value="sale">تخفیف</option>
+    </select>
+  </div>
+  <div class="field"><label>موجودی</label><input type="number" id="pm-stock" placeholder="10"></div>
+  <button class="btn-primary full" onclick="saveProduct()">ذخیره محصول</button>
+</div>
+
+<!-- About Modal -->
+<div class="modal" id="modal-about">
+  <button class="modal-close" onclick="closeAllModals()">✕</button>
+  <h3>درباره HamishaShop</h3>
+  <p style="line-height:1.8;margin-top:1rem;color:#aaa">HamishaShop یک فروشگاه تخصصی اکانت‌های ماینکرفت است. ما با هدف ارائه اکانت‌های اورجینال جاوا و بدراک با قیمت مناسب و پشتیبانی کامل فعالیت می‌کنیم.<br><br>تمامی اکانت‌های فروخته شده توسط تیم ما بررسی شده و دارای گارانتی هستند.</p>
+</div>
+
+<!-- Contact Modal -->
+<div class="modal" id="modal-contact">
+  <button class="modal-close" onclick="closeAllModals()">✕</button>
+  <h3>تماس با ما</h3>
+  <div style="margin-top:1rem;display:flex;flex-direction:column;gap:0.75rem">
+    <div class="contact-item">📬 <span>ایمیل: support@hamishaشop.ir</span></div>
+    <div class="contact-item">💬 <span>تلگرام: @HamishaShop</span></div>
+    <div class="contact-item">⏰ <span>پاسخگویی: ۹ صبح تا ۱۱ شب</span></div>
+  </div>
+  <p class="muted small" style="margin-top:1.5rem">برای مشکلات فوری از سیستم تیکت استفاده کنید</p>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
